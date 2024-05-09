@@ -1,0 +1,22 @@
+package components
+
+templ Index(name string) {
+    <!doctype html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            <title>go-website</title>
+            <script src="/static/htmx.min.js" />
+        </head>
+        <body>
+            <h1>Hello, { name }!</h1>
+            <button hx-post="/clicked" hx-swap="outerHTML">
+                Click Me
+            </button>
+        </body>
+    </html>
+}
+
+templ Clicked() {
+    <h1>You clicked the button!</h1>
+}
