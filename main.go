@@ -12,6 +12,7 @@ import (
 )
 
 //go:generate go run github.com/a-h/templ/cmd/templ generate
+//go:generate npx --yes tailwindcss@latest -i ./static/global.css -o ./static/tailwind.css --minify
 
 func Component(c echo.Context, code int, component templ.Component) error {
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
