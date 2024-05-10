@@ -33,19 +33,14 @@ func WithContentType(contentType string) RenderOption {
 }
 
 func Render(c echo.Context, component templ.Component, options ...RenderOption) error {
-	var opts RenderOptions
+	opts := RenderOptions{Status: http.StatusOK, ContentType: echo.MIMETextHTML}
 
 	for _, opt := range options {
 		opt(&opts)
 	}
 
-	if opts.ContentType != "" {
-		c.Response().Header().Set(echo.HeaderContentType, opts.ContentType)
-	}
-
-	if opts.Status != 0 {
-		c.Response().Status = opts.Status
-	}
+	c.Response().Header().Set(echo.HeaderContentType, opts.ContentType)
+	c.Response().Status = opts.Status
 
 	return component.Render(c.Request().Context(), c.Response())
 }

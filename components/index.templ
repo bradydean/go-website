@@ -10,23 +10,35 @@ templ Index() {
 		</head>
 		<body>
 			<h1>Hello!</h1>
-			<input
-				hx-get="/search"
-				hx-trigger="keyup changed delay:500ms"
-				hx-target="#search-results"
-				type="text"
-				name="q"
-				placeholder="Search..."
-			/>
-			<div id="search-results"></div>
+			@Search()
 		</body>
 	</html>
 }
 
+templ Search() {
+	<div id="search">
+		<input
+			hx-get="/search"
+			hx-trigger="keyup changed delay:500ms"
+			hx-target="#search-results"
+			hx-indicator="#search"
+			type="text"
+			name="q"
+			placeholder="Search..."
+		/>
+		<pre class="htmx-indicator">Loading...</pre>
+		<div id="search-results">
+			@SearchResults([]string{})
+		</div>
+	</div>
+}
+
 templ SearchResults(results []string) {
-	<ul>
-		for _, result := range results {
-			<li>{ result }</li>
-		}
-	</ul>
+	if len(results) != 0 {
+		<ul>
+			for _, result := range results {
+				<li>{ result }</li>
+			}
+		</ul>
+	}
 }
