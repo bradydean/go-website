@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/a-h/templ"
 	"github.com/labstack/echo/v4"
@@ -60,7 +61,7 @@ func main() {
 
 	e.GET("/search", func(c echo.Context) error {
 		q := c.QueryParam("q")
-		return c.String(http.StatusOK, q)
+		return Render(c, components.SearchResults(strings.Split(q, "")))
 	})
 
 	if err := e.Start(":8000"); err != nil && err != http.ErrServerClosed {

@@ -22,3 +22,11 @@ templ Index() {
 		</body>
 	</html>
 }
+
+templ SearchResults(results []string) {
+	<ul>
+		for _, result := range results {
+			<li>{ result }</li>
+		}
+	</ul>
+}
