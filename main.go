@@ -55,11 +55,12 @@ func main() {
 	e.Group("/static").Use(middleware.Static("static"))
 
 	e.GET("/", func(c echo.Context) error {
-		return Render(c, components.Index("World"))
+		return Render(c, components.Index())
 	})
 
-	e.POST("/clicked", func(c echo.Context) error {
-		return Render(c, components.Clicked(), WithStatus(http.StatusCreated))
+	e.GET("/search", func(c echo.Context) error {
+		q := c.QueryParam("q")
+		return c.String(http.StatusOK, q)
 	})
 
 	if err := e.Start(":8000"); err != nil && err != http.ErrServerClosed {
