@@ -13,35 +13,9 @@ import (
 
 //go:generate go run github.com/a-h/templ/cmd/templ generate
 
-type RenderOption func(*RenderOptions)
-
-type RenderOptions struct {
-	Status      int
-	ContentType string
-}
-
-func WithStatus(status int) RenderOption {
-	return func(opt *RenderOptions) {
-		opt.Status = status
-	}
-}
-
-func WithContentType(contentType string) RenderOption {
-	return func(opt *RenderOptions) {
-		opt.ContentType = contentType
-	}
-}
-
-func Render(c echo.Context, component templ.Component, options ...RenderOption) error {
-	opts := RenderOptions{Status: http.StatusOK, ContentType: echo.MIMETextHTML}
-
-	for _, opt := range options {
-		opt(&opts)
-	}
-
-	c.Response().Header().Set(echo.HeaderContentType, opts.ContentType)
-	c.Response().Status = opts.Status
-
+func Component(c echo.Context, code int, component templ.Component) error {
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+	c.Response().Status = code
 	return component.Render(c.Request().Context(), c.Response())
 }
 
@@ -51,12 +25,12 @@ func main() {
 	e.Group("/static").Use(middleware.Static("static"))
 
 	e.GET("/", func(c echo.Context) error {
-		return Render(c, components.Index())
+		return Component(c, http.StatusOK, components.Index())
 	})
 
 	e.GET("/search", func(c echo.Context) error {
 		q := c.QueryParam("q")
-		return Render(c, components.SearchResults(strings.Split(q, "")))
+		return Component(c, http.StatusOK, components.SearchResults(strings.Split(q, "")))
 	})
 
 	if err := e.Start(":8000"); err != nil && err != http.ErrServerClosed {
