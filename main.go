@@ -25,12 +25,9 @@ func main() {
 	e.Group("/static").Use(middleware.Static("static"))
 
 	e.GET("/", func(c echo.Context) error {
-		return Component(c, http.StatusOK, components.Index())
-	})
-
-	e.GET("/search", func(c echo.Context) error {
-		q := c.QueryParam("q")
-		return Component(c, http.StatusOK, components.SearchResults(strings.Split(q, "")))
+		search := c.QueryParam("search")
+		results := strings.Split(search, "")
+		return Component(c, http.StatusOK, components.Index(results))
 	})
 
 	if err := e.Start(":8000"); err != nil && err != http.ErrServerClosed {

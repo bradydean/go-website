@@ -7,5 +7,8 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "**/__debug_bin*": true
+    },
+    "tailwindCSS.includeLanguages": {
+        "templ": "html"
     }
 }

@@ -1,44 +1,47 @@
 package components
 
-templ Index() {
+templ Index(results []string) {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
 			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<title>go-website</title>
 			<script src="/static/htmx.min.js"></script>
+			<link href="/static/global.css" rel="stylesheet"/>
+			<link href="/static/tailwind.css" rel="stylesheet"/>
 		</head>
 		<body>
-			<h1>Hello!</h1>
-			@Search()
+			<h1 class="text-3xl font-bold underline">Hello!</h1>
+			@Search(results)
 		</body>
 	</html>
 }
 
-templ Search() {
+templ Search(results []string) {
 	<div id="search">
 		<input
-			hx-get="/search"
+			hx-get="."
+			hx-select="#search-results"
 			hx-trigger="keyup changed delay:500ms"
+			hx-swap="outerHTML"
 			hx-target="#search-results"
 			hx-indicator="#search"
+			hx-replace-url="true"
 			type="text"
-			name="q"
+			name="search"
 			placeholder="Search..."
+			class="border-2 border-grey-800"
 		/>
 		<pre class="htmx-indicator">Loading...</pre>
 		<div id="search-results">
-			@SearchResults(nil)
+			if len(results) != 0 {
+				<ul>
+					for _, result := range results {
+						<li>{ result }</li>
+					}
+				</ul>
+			}
 		</div>
 	</div>
-}
-
-templ SearchResults(results []string) {
-	if len(results) != 0 {
-		<ul>
-			for _, result := range results {
-				<li>{ result }</li>
-			}
-		</ul>
-	}
 }
