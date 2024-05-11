@@ -28,7 +28,8 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		search := c.QueryParam("search")
 		results := strings.Split(search, "")
-		return Component(c, http.StatusOK, components.Index("go-website", results))
+		layout := components.Layout("go-website", components.Search(results))
+		return Component(c, http.StatusOK, layout)
 	})
 
 	if err := e.Start(":8000"); err != nil && err != http.ErrServerClosed {

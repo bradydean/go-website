@@ -1,13 +1,7 @@
 package components
 
-templ Index(title string, results []string) {
-	@Layout(title) {
-		@Search(results)
-	}
-}
-
 templ Search(results []string) {
-	<div id="search">
+	<div id="search" class="m-5">
 		<input
 			hx-get="."
 			hx-select="#search-results"
@@ -24,7 +18,7 @@ templ Search(results []string) {
 		<pre class="htmx-indicator">Loading...</pre>
 		<div id="search-results">
 			if len(results) != 0 {
-				<ul>
+				<ul class="list-disc">
 					for _, result := range results {
 						<li>{ result }</li>
 					}
