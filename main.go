@@ -8,11 +8,11 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"github.com/bradydean/go-website/components"
+	"github.com/bradydean/go-website/internal/pkg/components"
 )
 
 //go:generate go run github.com/a-h/templ/cmd/templ generate
-//go:generate npx --yes tailwindcss@latest -i ./static/global.css -o ./static/tailwind.css --minify
+//go:generate npx --yes tailwindcss@latest -i ./global.css -o ./static/tailwind.css --minify
 
 func Component(c echo.Context, code int, component templ.Component) error {
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
@@ -28,7 +28,7 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		search := c.QueryParam("search")
 		results := strings.Split(search, "")
-		return Component(c, http.StatusOK, components.Index(results))
+		return Component(c, http.StatusOK, components.Index("go-website", results))
 	})
 
 	if err := e.Start(":8000"); err != nil && err != http.ErrServerClosed {

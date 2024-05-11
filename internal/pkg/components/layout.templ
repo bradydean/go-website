@@ -1,0 +1,20 @@
+package components
+
+templ header(title string) {
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>{ title }</title>
+		<script src="/static/htmx.min.js"></script>
+		<link href="/static/tailwind.css" rel="stylesheet"/>
+	</head>
+}
+
+templ Layout(title string) {
+	@header(title)
+	<body>
+		<main>
+			{ children... }
+		</main>
+	</body>
+}

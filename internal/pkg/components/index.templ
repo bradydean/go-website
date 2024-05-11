@@ -1,21 +1,9 @@
 package components
 
-templ Index(results []string) {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="utf-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-			<title>go-website</title>
-			<script src="/static/htmx.min.js"></script>
-			<link href="/static/global.css" rel="stylesheet"/>
-			<link href="/static/tailwind.css" rel="stylesheet"/>
-		</head>
-		<body>
-			<h1 class="text-3xl font-bold underline">Hello!</h1>
-			@Search(results)
-		</body>
-	</html>
+templ Index(title string, results []string) {
+	@Layout(title) {
+		@Search(results)
+	}
 }
 
 templ Search(results []string) {
