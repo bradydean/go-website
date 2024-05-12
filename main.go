@@ -15,9 +15,14 @@ import (
 //go:generate npx --yes tailwindcss@latest -i ./global.css -o ./static/tailwind.css --minify
 
 func Component(c echo.Context, code int, component templ.Component) error {
-	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
-	c.Response().Status = code
-	return component.Render(c.Request().Context(), c.Response())
+	buf := templ.GetBuffer()
+	defer templ.ReleaseBuffer(buf)
+
+	if err := component.Render(c.Request().Context(), buf); err != nil {
+		return err
+	}
+
+	return c.HTML(code, buf.String())
 }
 
 func main() {
