@@ -1,7 +1,9 @@
 package components
 
-templ Search(name string, results []string) {
-	<h1>Hello, { name }</h1>
+templ Search(results []string) {
+	<a href="/login" class="text-blue-500">Login</a>
+	<a href="/logout" class="text-blue-500">Logout</a>
+	<a href="/profile" class="text-blue-500">Profile</a>
 	<div id="search" class="m-5">
 		<input
 			hx-get="."
