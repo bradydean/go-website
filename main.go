@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -69,7 +70,7 @@ func main() {
 					slog.String("err", v.Error.Error()),
 				)
 			}
-			
+
 			return nil
 		},
 	}))
@@ -93,6 +94,14 @@ func main() {
 
 	e.Use(session)
 
+	db, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+
+	if err != nil {
+		e.Logger.Fatalf("Unable to connect to database: %v\n", err)
+	}
+
+	defer db.Close()
+
 	e.Group("/static").Use(middleware.Static("static"))
 
 	e.GET("/login", handlers.NewLoginHandler(auth).Handler)
@@ -100,6 +109,7 @@ func main() {
 	e.GET("/callback", handlers.NewCallbackHandler(auth).Handler)
 	e.GET("/", handlers.NewIndexHandler().Handler)
 	e.GET("/profile", handlers.NewProfileHandler().Handler, authentication.IsAuthenticated)
+	e.GET("/lists", handlers.NewListsHandler(db).Handler, authentication.IsAuthenticated)
 
 	go func() {
 		port := os.Getenv("PORT")
