@@ -17,6 +17,7 @@ import (
 	"github.com/bradydean/go-website/internal/pkg/handlers"
 	"github.com/bradydean/go-website/internal/pkg/middleware/authentication"
 	"github.com/bradydean/go-website/internal/pkg/middleware/session"
+	"github.com/bradydean/go-website/internal/pkg/profile"
 )
 
 //go:generate go run github.com/a-h/templ/cmd/templ generate
@@ -25,7 +26,8 @@ import (
 func main() {
 	e := echo.New()
 
-	gob.Register(map[string]interface{}{})
+	gob.Register(profile.ProfileKey{})
+	gob.Register(profile.Profile{})
 
 	auth, err := authenticator.New()
 

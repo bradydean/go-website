@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/bradydean/go-website/internal/pkg/authenticator"
+	"github.com/bradydean/go-website/internal/pkg/profile"
 	"github.com/labstack/echo-contrib/session"
 )
 
@@ -45,14 +46,13 @@ func (h callbackHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to verify id token: %w", err)
 	}
 
-	var profile map[string]interface{}
+	var claims profile.Profile
 
-	if err := idToken.Claims(&profile); err != nil {
+	if err := idToken.Claims(&claims); err != nil {
 		return fmt.Errorf("failed to parse id token claims: %w", err)
 	}
 
-	sess.Values["access_token"] = token.AccessToken
-	sess.Values["profile"] = profile
+	sess.Values[profile.ProfileKey{}] = claims
 
 	if err := sess.Save(c.Request(), c.Response()); err != nil {
 		return fmt.Errorf("failed to save session: %w", err)

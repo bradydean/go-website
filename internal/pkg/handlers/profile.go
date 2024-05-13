@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/bradydean/go-website/internal/pkg/components"
+	"github.com/bradydean/go-website/internal/pkg/profile"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
@@ -22,8 +23,7 @@ func (h profileHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to get session: %w", err)
 	}
 
-	profile := sess.Values["profile"].(map[string]interface{})
-	name := profile["name"].(string)
+	profile := sess.Values[profile.ProfileKey{}].(profile.Profile)
 
-	return components.Render(c, http.StatusOK, components.Layout("Profile", components.Profile(name)))
+	return components.Render(c, http.StatusOK, components.Layout("Profile", components.Profile(profile.Name, profile.Email)))
 }

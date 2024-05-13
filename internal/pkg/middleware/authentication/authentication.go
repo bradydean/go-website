@@ -6,6 +6,8 @@ import (
 
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
+
+	"github.com/bradydean/go-website/internal/pkg/profile"
 )
 
 func IsAuthenticated(next echo.HandlerFunc) echo.HandlerFunc {
@@ -16,7 +18,7 @@ func IsAuthenticated(next echo.HandlerFunc) echo.HandlerFunc {
 			return fmt.Errorf("failed to get session: %w", err)
 		}
 
-		if sess.Values["profile"] == nil {
+		if sess.Values[profile.ProfileKey{}] == nil {
 			return c.Redirect(http.StatusTemporaryRedirect, "/login")
 		}
 
