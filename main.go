@@ -35,7 +35,7 @@ func main() {
 	auth, err := authenticator.New()
 
 	if err != nil {
-		e.Logger.Fatal(fmt.Errorf("failed to create oauth2 authenticator: %w", err))
+		e.Logger.Fatalf("failed to create oauth2 authenticator: %w", err)
 	}
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
@@ -89,7 +89,7 @@ func main() {
 	session, err := session.New()
 
 	if err != nil {
-		e.Logger.Fatal(fmt.Errorf("failed to create session middleware: %w", err))
+		e.Logger.Fatalf("failed to create session middleware: %w", err)
 	}
 
 	e.Use(session)
@@ -97,7 +97,7 @@ func main() {
 	db, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 
 	if err != nil {
-		e.Logger.Fatalf("Unable to connect to database: %v\n", err)
+		e.Logger.Fatalf("unable to connect to database: %w\n", err)
 	}
 
 	defer db.Close()
@@ -119,7 +119,7 @@ func main() {
 		}
 
 		if err := e.Start(":" + port); err != nil && err != http.ErrServerClosed {
-			e.Logger.Fatal(fmt.Errorf("shutting down the server: %w", err))
+			e.Logger.Fatalf("shutting down the server: %w", err)
 		}
 	}()
 
@@ -127,6 +127,6 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := e.Shutdown(ctx); err != nil {
-		e.Logger.Fatal(fmt.Errorf("error shutting down the server: %w", err))
+		e.Logger.Fatalf("error shutting down the server: %w", err)
 	}
 }
