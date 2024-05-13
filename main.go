@@ -72,7 +72,15 @@ func main() {
 	e.GET("/", handlers.NewIndexHandler().Handler)
 	e.GET("/profile", handlers.NewProfileHandler().Handler, authentication.IsAuthenticated)
 
-	if err := e.Start(":8000"); err != nil && err != http.ErrServerClosed {
-		e.Logger.Fatal(err)
-	}
+	go func() {
+		port := os.Getenv("PORT")
+
+		if port == "" {
+			port = "8000"
+		}
+
+		if err := e.Start(":" + port); err != nil && err != http.ErrServerClosed {
+			e.Logger.Fatal(err)
+		}
+	}()
 }
