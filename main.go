@@ -6,6 +6,8 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"os/signal"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -22,6 +24,9 @@ import (
 //go:generate npx --yes tailwindcss@latest -i ./global.css -o ./static/tailwind.css --minify
 
 func main() {
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+
 	e := echo.New()
 
 	auth, err := authenticator.New()
@@ -80,7 +85,14 @@ func main() {
 		}
 
 		if err := e.Start(":" + port); err != nil && err != http.ErrServerClosed {
-			e.Logger.Fatal(err)
+			e.Logger.Fatal(fmt.Errorf("shutting down the server: %w", err))
 		}
 	}()
+
+	<-ctx.Done()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := e.Shutdown(ctx); err != nil {
+		e.Logger.Fatal(err)
+	}
 }
