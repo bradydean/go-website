@@ -34,7 +34,7 @@ func Profile(profile profile.Profile) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(profile.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/profile.templ`, Line: 9, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/profile.templ`, Line: 9, Col: 27}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -47,7 +47,7 @@ func Profile(profile profile.Profile) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(profile.Email)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/profile.templ`, Line: 10, Col: 40}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/profile.templ`, Line: 10, Col: 34}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -60,7 +60,7 @@ func Profile(profile profile.Profile) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(profile.UserID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/profile.templ`, Line: 11, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/profile.templ`, Line: 11, Col: 29}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {

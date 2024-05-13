@@ -28,6 +28,8 @@ func main() {
 	defer stop()
 
 	e := echo.New()
+	e.HideBanner = true
+	e.HidePort = true
 
 	auth, err := authenticator.New()
 
@@ -43,21 +45,42 @@ func main() {
 		LogError:    true,
 		HandleError: true,
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+			var level slog.Level
+
+			if v.Status >= 500 {
+				level = slog.LevelError
+			} else if v.Status >= 400 {
+				level = slog.LevelWarn
+			} else {
+				level = slog.LevelInfo
+			}
+
 			if v.Error == nil {
 				msg := fmt.Sprintf("uri=%s status=%d", v.URI, v.Status)
-				logger.LogAttrs(context.Background(), slog.LevelInfo, msg,
+				logger.LogAttrs(context.Background(), level, msg,
 					slog.String("uri", v.URI),
 					slog.Int("status", v.Status),
 				)
 			} else {
-				msg := fmt.Sprintf("uri=%s status=%d error=%s", v.URI, v.Status, v.Error)
-				logger.LogAttrs(context.Background(), slog.LevelError, msg,
+				msg := fmt.Sprintf("uri=%s status=%d err=%v", v.URI, v.Status, v.Error)
+				logger.LogAttrs(context.Background(), level, msg,
 					slog.String("uri", v.URI),
 					slog.Int("status", v.Status),
 					slog.String("err", v.Error.Error()),
 				)
 			}
 			return nil
+		},
+	}))
+
+	e.Use(middleware.RecoverWithConfig(middleware.RecoverConfig{
+		LogErrorFunc: func(c echo.Context, err error, stack []byte) error {
+			msg := fmt.Sprintf("err=%v", err)
+			logger.LogAttrs(context.Background(), slog.LevelError, msg,
+				slog.String("err", err.Error()),
+				slog.String("stack", string(stack)),
+			)
+			return err
 		},
 	}))
 
