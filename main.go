@@ -69,6 +69,7 @@ func main() {
 					slog.String("err", v.Error.Error()),
 				)
 			}
+			
 			return nil
 		},
 	}))
