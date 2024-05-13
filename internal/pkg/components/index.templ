@@ -1,32 +1,14 @@
 package components
 
-templ Search(results []string) {
-	<a href="/login" class="text-blue-500">Login</a>
-	<a href="/logout" class="text-blue-500">Logout</a>
-	<a href="/profile" class="text-blue-500">Profile</a>
-	<div id="search" class="m-5">
-		<input
-			hx-get="."
-			hx-select="#search-results"
-			hx-trigger="keyup changed delay:500ms"
-			hx-swap="outerHTML"
-			hx-target="#search-results"
-			hx-indicator="#search"
-			hx-replace-url="true"
-			type="text"
-			name="search"
-			placeholder="Search..."
-			class="border-2 border-grey-800"
-		/>
-		<pre class="htmx-indicator">Loading...</pre>
-		<div id="search-results">
-			if len(results) != 0 {
-				<ul class="list-disc">
-					for _, result := range results {
-						<li>{ result }</li>
-					}
-				</ul>
-			}
-		</div>
-	</div>
+import (
+	"github.com/bradydean/go-website/internal/pkg/profile"
+)
+
+templ Index(profile *profile.Profile) {
+	if profile != nil {
+		<a href="/logout" class="text-blue-500">Logout</a>
+		<a href="/profile" class="text-blue-500">Profile</a>
+	} else {
+		<a href="/login" class="text-blue-500">Login</a>
+	}
 }

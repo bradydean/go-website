@@ -7,8 +7,9 @@ import (
 type ProfileKey struct{}
 
 type Profile struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	UserID string `json:"sub"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
 }
 
 func init() {

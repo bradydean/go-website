@@ -25,5 +25,5 @@ func (h profileHandler) Handler(c echo.Context) error {
 
 	profile := sess.Values[profile.ProfileKey{}].(profile.Profile)
 
-	return components.Render(c, http.StatusOK, components.Layout("Profile", components.Profile(profile.Name, profile.Email)))
+	return components.Render(c, http.StatusOK, components.Layout("Profile", components.Profile(profile)))
 }
