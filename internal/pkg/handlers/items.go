@@ -64,7 +64,6 @@ func (h itemsHandler) Handler(c echo.Context) error {
 			}
 
 			layout := components.Layout("List Not Found", components.NotFound(&profile))
-
 			return components.Render(c, http.StatusNotFound, layout)
 		}
 
@@ -91,11 +90,7 @@ func (h itemsHandler) Handler(c echo.Context) error {
 	items := make([]components.Item, 0, len(itemRecords))
 
 	for _, record := range itemRecords {
-		items = append(items, components.Item{
-			ItemID:     record.ItemID,
-			Content:    record.Content,
-			IsComplete: record.IsComplete,
-		})
+		items = append(items, components.Item(record))
 	}
 
 	if c.Request().Header.Get("HX-Boosted") != "" {
@@ -103,6 +98,5 @@ func (h itemsHandler) Handler(c echo.Context) error {
 	}
 
 	layout := components.Layout(listRecord.Title, components.Items(profile, listRecord.Title, items))
-
 	return components.Render(c, http.StatusOK, layout)
 }
