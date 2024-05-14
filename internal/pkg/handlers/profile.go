@@ -22,5 +22,9 @@ func (h profileHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to get profile: %w", err)
 	}
 
-	return components.Render(c, http.StatusOK, components.Layout("Profile", &profile, components.Profile(profile)))
+	if c.Request().Header.Get("HX-Boosted") != "" {
+		return components.Render(c, http.StatusOK, components.Boost("Profile", components.Profile(profile)))
+	}
+
+	return components.Render(c, http.StatusOK, components.Layout("Profile", components.Profile(profile)))
 }

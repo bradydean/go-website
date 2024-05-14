@@ -5,9 +5,12 @@ import (
 )
 
 templ Profile(profile profile.Profile) {
-	<div>
-		<h1>Hello, { profile.Name }!</h1>
-		<p>Your email is { profile.Email }</p>
-		<p>User ID { profile.UserID }</p>
-	</div>
+	@Navbar(&profile)
+	<main>
+		<div>
+			<h1>Hello, { profile.Name }!</h1>
+			<p>Your email is { profile.Email }</p>
+			<p>User ID { profile.UserID }</p>
+		</div>
+	</main>
 }

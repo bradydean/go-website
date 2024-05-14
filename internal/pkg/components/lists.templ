@@ -1,21 +1,28 @@
 package components
 
+import (
+	"github.com/bradydean/go-website/internal/pkg/profile"
+)
+
 type List struct {
 	Title       string
 	Description string
 	Url         string
 }
 
-templ Lists(lists []List) {
-	<h1>Lists</h1>
-	if len(lists) != 0 {
-		<ul class="list-disc">
-			for _, list := range lists {
-				<li>
-					<a class="text-blue-500" href={ templ.URL(list.Url) }>{ list.Title }</a>
-					<p>{ list.Description }</p>
-				</li>
-			}
-		</ul>
-	}
+templ Lists(profile *profile.Profile, lists []List) {
+	@Navbar(profile)
+	<main>
+		<h1>Lists</h1>
+		if len(lists) != 0 {
+			<ul class="list-disc">
+				for _, list := range lists {
+					<li>
+						<a class="text-blue-500" href={ templ.URL(list.Url) }>{ list.Title }</a>
+						<p>{ list.Description }</p>
+					</li>
+				}
+			</ul>
+		}
+	</main>
 }

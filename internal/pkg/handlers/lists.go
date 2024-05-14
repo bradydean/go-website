@@ -62,7 +62,7 @@ func (h listsHandler) Handler(c echo.Context) error {
 		})
 	}
 
-	layout := components.Layout("My Lists", &profile, components.Lists(lists))
+	layout := components.Layout("My Lists", components.Lists(&profile, lists))
 
 	return components.Render(c, http.StatusOK, layout)
 }

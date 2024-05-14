@@ -14,7 +14,7 @@ templ header(title string) {
 	</head>
 }
 
-templ navbar(profile *profile.Profile) {
+templ Navbar(profile *profile.Profile) {
 	<div class="navbar bg-base-100">
 		<div class="flex-1">
 			<a href="/" hx-boost="true" class="btn text-xl">Todo Lists</a>
@@ -52,13 +52,10 @@ templ navbar(profile *profile.Profile) {
 	</div>
 }
 
-templ Layout(title string, profile *profile.Profile, content templ.Component) {
+templ Layout(title string, content templ.Component) {
 	<!DOCTYPE html>
 	@header(title)
 	<body>
-		@navbar(profile)
-		<main>
-			@content
-		</main>
+		@content
 	</body>
 }
