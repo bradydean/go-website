@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
@@ -35,10 +36,18 @@ func (h loginHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to get session: %w", err)
 	}
 
+	secure := true
+
+	if os.Getenv("ENVIRONMENT") == "development" {
+		secure = false
+	}
+
 	sess.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   86400 * 7,
 		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		Secure: secure,
 	}
 
 	sess.Values["state"] = state
