@@ -23,9 +23,8 @@ func NewListsHandler(db *pgxpool.Pool) listsHandler {
 }
 
 type listsRecord struct {
-	ListID      int64  `db:"lists.list_id"`
-	Title       string `db:"lists.title"`
-	Description string `db:"lists.description"`
+	ListID int64  `db:"lists.list_id"`
+	Title  string `db:"lists.title"`
 }
 
 func (h listsHandler) Handler(c echo.Context) error {
@@ -38,7 +37,6 @@ func (h listsHandler) Handler(c echo.Context) error {
 	query, args := pg.SELECT(
 		todo.Lists.ListID,
 		todo.Lists.Title,
-		todo.Lists.Description,
 	).
 		FROM(todo.Lists).
 		WHERE(todo.Lists.UserID.EQ(pg.String(profile.UserID))).
@@ -56,9 +54,8 @@ func (h listsHandler) Handler(c echo.Context) error {
 
 	for _, record := range records {
 		lists = append(lists, components.List{
-			Title:       record.Title,
-			Description: record.Description,
-			Url:         fmt.Sprintf("/lists/%d", record.ListID),
+			Title: record.Title,
+			Url:   fmt.Sprintf("/lists/%d", record.ListID),
 		})
 	}
 
@@ -66,7 +63,7 @@ func (h listsHandler) Handler(c echo.Context) error {
 		return components.Render(c, http.StatusOK, components.Boost("My Lists", components.Lists(&profile, lists)))
 	}
 
-	layout := components.Layout("My Lists", components.Lists(&profile, lists))
+	layout := components.Layout("My Lists", components.Lists(profile, lists))
 
 	return components.Render(c, http.StatusOK, layout)
 }

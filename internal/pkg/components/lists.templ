@@ -6,12 +6,11 @@ import (
 
 type List struct {
 	Title       string
-	Description string
 	Url         string
 }
 
-templ Lists(profile *profile.Profile, lists []List) {
-	@Navbar(profile)
+templ Lists(profile profile.Profile, lists []List) {
+	@Navbar(&profile)
 	<main>
 		if len(lists) != 0 {
 			<div class="flex justify-center">
