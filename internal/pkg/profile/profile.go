@@ -25,7 +25,7 @@ func Get(c echo.Context) (*Profile, error) {
 	}
 
 	profile, ok := session.Values[ProfileKey{}].(Profile)
-	
+
 	if !ok {
 		return nil, nil
 	}

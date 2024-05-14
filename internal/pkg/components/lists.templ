@@ -13,16 +13,17 @@ type List struct {
 templ Lists(profile *profile.Profile, lists []List) {
 	@Navbar(profile)
 	<main>
-		<h1>Lists</h1>
 		if len(lists) != 0 {
-			<ul class="list-disc">
-				for _, list := range lists {
-					<li>
-						<a class="text-blue-500" href={ templ.URL(list.Url) }>{ list.Title }</a>
-						<p>{ list.Description }</p>
-					</li>
-				}
-			</ul>
+			<div class="flex justify-center">
+				<ul class="menu bg-base-200 w-56 rounded-box text-xl">
+					<li class="menu-title">My Lists</li>
+					for _, list := range lists {
+						<li>
+							<a href={ templ.URL(list.Url) }>{ list.Title }</a>
+						</li>
+					}
+				</ul>
+			</div>
 		}
 	</main>
 }
