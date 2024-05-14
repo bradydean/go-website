@@ -24,11 +24,13 @@ func Get(c echo.Context) (*Profile, error) {
 		return nil, err
 	}
 
-	if profile, ok := session.Values[ProfileKey{}].(Profile); ok {
-		return &profile, nil
+	profile, ok := session.Values[ProfileKey{}].(Profile)
+	
+	if !ok {
+		return nil, nil
 	}
 
-	return nil, nil
+	return &profile, nil
 }
 
 func MustGet(c echo.Context) (Profile, error) {
