@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
@@ -38,7 +39,7 @@ func (h loginHandler) Handler(c echo.Context) error {
 
 	secure := true
 
-	if os.Getenv("ENVIRONMENT") == "development" {
+	if strings.HasPrefix(os.Getenv("AUTH0_CALLBACK_URL"), "http://") {
 		secure = false
 	}
 
@@ -47,7 +48,7 @@ func (h loginHandler) Handler(c echo.Context) error {
 		MaxAge:   86400 * 7,
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
-		Secure: secure,
+		Secure:   secure,
 	}
 
 	sess.Values["state"] = state
