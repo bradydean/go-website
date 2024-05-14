@@ -6,7 +6,8 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
-        "**/__debug_bin*": true
+        "**/__debug_bin*": true,
+        "**/*_templ.go": true
     },
     "tailwindCSS.includeLanguages": {
         "templ": "html"
