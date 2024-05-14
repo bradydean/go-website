@@ -11,9 +11,10 @@ import (
 type ProfileKey struct{}
 
 type Profile struct {
-	UserID string `json:"sub"`
-	Name   string `json:"name"`
-	Email  string `json:"email"`
+	UserID  string `json:"sub"`
+	Name    string `json:"name"`
+	Email   string `json:"email"`
+	Picture string `json:"picture"`
 }
 
 func Get(c echo.Context) (*Profile, error) {

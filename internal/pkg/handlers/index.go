@@ -23,7 +23,7 @@ func (h indexHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to get profile: %w", err)
 	}
 
-	layout := components.Layout("Go Website", components.Index(profile))
+	layout := components.Layout("Go Website", profile, components.Index(profile))
 
 	return components.Render(c, http.StatusOK, layout)
 }

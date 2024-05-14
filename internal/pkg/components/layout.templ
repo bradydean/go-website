@@ -1,5 +1,9 @@
 package components
 
+import (
+	"github.com/bradydean/go-website/internal/pkg/profile"
+)
+
 templ header(title string) {
 	<head>
 		<meta charset="utf-8"/>
@@ -10,10 +14,49 @@ templ header(title string) {
 	</head>
 }
 
-templ Layout(title string, content templ.Component) {
+templ navbar(profile *profile.Profile) {
+	<div class="navbar bg-base-100">
+		<div class="flex-1">
+			<a href="/" hx-boost="true" class="btn text-xl">Todo Lists</a>
+		</div>
+		<div class="flex-none gap-2">
+			<div class="dropdown dropdown-end">
+				<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+					<div class="w-10 rounded-full">
+						if profile != nil {
+							<img alt={ profile.Name + "profile picture" } src={ profile.Picture }/>
+						} else {
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+							</svg>
+						}
+					</div>
+				</div>
+				<ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+					if profile != nil {
+						<li>
+							<a href="/profile" hx-boost="true" class="justify-between">
+								Profile
+							</a>
+						</li>
+						<li><a href="/logout">Logout</a></li>
+					} else {
+						<li><a href="/login">Login</a></li>
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+}
+
+templ Layout(title string, profile *profile.Profile, content templ.Component) {
 	<!DOCTYPE html>
 	@header(title)
 	<body>
+		@navbar(profile)
 		<main>
 			@content
 		</main>

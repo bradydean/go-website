@@ -4,21 +4,5 @@ import (
 	"github.com/bradydean/go-website/internal/pkg/profile"
 )
 
-templ loggedOutView() {
-	<a href="/login" class="text-blue-500">Login</a>
-}
-
-templ loggedInView(profile profile.Profile) {
-	<a href="/logout" class="text-blue-500">Logout</a>
-	<a href="/profile" class="text-blue-500">Profile</a>
-	<h1>Welcome, { profile.Name }!</h1>
-	<a href="/lists" class="text-blue-500">Lists</a>
-}
-
 templ Index(profile *profile.Profile) {
-	if profile != nil {
-		@loggedInView(*profile)
-	} else {
-		@loggedOutView()
-	}
 }
