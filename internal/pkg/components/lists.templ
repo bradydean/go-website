@@ -5,8 +5,8 @@ import (
 )
 
 type List struct {
-	Title       string
-	Url         string
+	Title string
+	Url   string
 }
 
 templ Lists(profile profile.Profile, lists []List) {
@@ -18,7 +18,7 @@ templ Lists(profile profile.Profile, lists []List) {
 					<li class="menu-title">My Lists</li>
 					for _, list := range lists {
 						<li>
-							<a href={ templ.URL(list.Url) }>{ list.Title }</a>
+							<a hx-boost="true" href={ templ.URL(list.Url) }>{ list.Title }</a>
 						</li>
 					}
 				</ul>

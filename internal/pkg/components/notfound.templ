@@ -1,0 +1,16 @@
+package components
+
+import (
+	"github.com/bradydean/go-website/internal/pkg/profile"
+)
+
+templ NotFound(profile *profile.Profile) {
+	@Navbar(profile)
+	<main>
+		<div class="flex justify-center">
+			<div class="text-3xl">
+				<p>Sorry, the page you are looking for does not exist.</p>
+			</div>
+		</div>
+	</main>
+}

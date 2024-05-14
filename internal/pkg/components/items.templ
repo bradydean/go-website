@@ -1,0 +1,38 @@
+package components
+
+import (
+	"github.com/bradydean/go-website/internal/pkg/profile"
+)
+
+type Item struct {
+	ItemID     int64
+	Content    string
+	IsComplete bool
+}
+
+templ Items(profile profile.Profile, title string, items []Item) {
+	@Navbar(&profile)
+	<main>
+		if len(items) != 0 {
+			<div class="flex justify-center">
+				<ul class="menu bg-base-200 w-56 rounded-box text-xl">
+					<li class="menu-title">{ title }</li>
+					for _, list := range items {
+						<li>
+							<div class="flex">
+								<p>{ list.Content }</p>
+								<input
+									type="checkbox"
+									class="checkbox"
+									if list.IsComplete {
+										checked
+									}
+								/>
+							</div>
+						</li>
+					}
+				</ul>
+			</div>
+		}
+	</main>
+}
