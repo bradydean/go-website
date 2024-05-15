@@ -23,6 +23,7 @@ import (
 
 //go:generate go run github.com/a-h/templ/cmd/templ generate
 //go:generate npx --yes tailwindcss@latest -i ./global.css -o ./static/tailwind.css --minify
+//go:generate go run ./internal/scripts/jet/main.go
 
 func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)

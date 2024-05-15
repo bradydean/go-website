@@ -53,19 +53,13 @@ go build -o go-website main.go
 
 ### shortcuts
 
-1. Generate `tailwind.css` and Templ components.
+1. Generate `tailwind.css` and Templ components, Jet schema builder.
 
 ```sh
 go generate
 ```
 
-2. Generate Jet schema builder.
-
-```sh
-go run ./internal/scripts/jet/main.go
-```
-
-3. Format files
+2. Format files
 
 ```sh
 go fmt ./...
