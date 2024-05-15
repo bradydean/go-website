@@ -12,12 +12,40 @@ type List struct {
 	Url    string
 }
 
+script openNewListModal() {
+	new_list_modal.showModal()
+}
+
 templ Lists(profile profile.Profile, lists []List) {
 	@Navbar(&profile)
 	<main>
 		<div class="flex justify-center">
-			<ul class="menu bg-base-200 w-56 rounded-box text-xl">
-				<li class="menu-title">My Lists</li>
+			<ul class="menu bg-base-200 w-96 rounded-box text-xl">
+				<div class="flex">
+					<li class="menu-title">My Lists</li>
+					<button class="btn btn-sm" onClick={ openNewListModal() }>
+						New List
+					</button>
+					<dialog id="new_list_modal" class="modal">
+						<div class="modal-box">
+							<div class="flex justify-between">
+								<h3>New List</h3>
+								<form method="dialog">
+									<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+								</form>
+							</div>
+							<form
+								hx-boost="true"
+								method="POST"
+								method="dialog"
+							>
+								<input type="text" name="title" placeholder="Title" maxlength="50" required/>
+								<input type="text" name="description" placeholder="Description" maxlength="50"/>
+								<button class="btn btn-sm">Create</button>
+							</form>
+						</div>
+					</dialog>
+				</div>
 				for _, list := range lists {
 					<li id={ fmt.Sprintf("list-%d", list.ListID) }>
 						<div class="flex">

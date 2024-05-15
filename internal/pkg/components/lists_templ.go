@@ -22,6 +22,16 @@ type List struct {
 	Url    string
 }
 
+func openNewListModal() templ.ComponentScript {
+	return templ.ComponentScript{
+		Name: `__templ_openNewListModal_7c4c`,
+		Function: `function __templ_openNewListModal_7c4c(){new_list_modal.showModal()
+}`,
+		Call:       templ.SafeScript(`__templ_openNewListModal_7c4c`),
+		CallInline: templ.SafeScriptInline(`__templ_openNewListModal_7c4c`),
+	}
+}
+
 func Lists(profile profile.Profile, lists []List) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -39,7 +49,24 @@ func Lists(profile profile.Profile, lists []List) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main><div class=\"flex justify-center\"><ul class=\"menu bg-base-200 w-56 rounded-box text-xl\"><li class=\"menu-title\">My Lists</li>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main><div class=\"flex justify-center\"><ul class=\"menu bg-base-200 w-96 rounded-box text-xl\"><div class=\"flex\"><li class=\"menu-title\">My Lists</li>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, openNewListModal())
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"btn btn-sm\" onClick=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 templ.ComponentScript = openNewListModal()
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2.Call)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">New List</button> <dialog id=\"new_list_modal\" class=\"modal\"><div class=\"modal-box\"><div class=\"flex justify-between\"><h3>New List</h3><form method=\"dialog\"><button class=\"btn btn-sm btn-circle btn-ghost absolute right-2 top-2\">✕</button></form></div><form hx-boost=\"true\" method=\"POST\" method=\"dialog\"><input type=\"text\" name=\"title\" placeholder=\"Title\" maxlength=\"50\" required> <input type=\"text\" name=\"description\" placeholder=\"Description\" maxlength=\"50\"> <button class=\"btn btn-sm\">Create</button></form></div></dialog></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -48,12 +75,12 @@ func Lists(profile profile.Profile, lists []List) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("list-%d", list.ListID))
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("list-%d", list.ListID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 22, Col: 49}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 50, Col: 49}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -61,8 +88,8 @@ func Lists(profile profile.Profile, lists []List) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var3 templ.SafeURL = templ.URL(list.Url)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var3)))
+			var templ_7745c5c3_Var4 templ.SafeURL = templ.URL(list.Url)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var4)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -70,12 +97,12 @@ func Lists(profile profile.Profile, lists []List) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(list.Title)
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(list.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 24, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 52, Col: 67}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -83,12 +110,12 @@ func Lists(profile profile.Profile, lists []List) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(list.Url)
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(list.Url)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 27, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 55, Col: 28}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -96,12 +123,12 @@ func Lists(profile profile.Profile, lists []List) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var6 string
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("#list-%d", list.ListID))
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("#list-%d", list.ListID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 29, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 57, Col: 56}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

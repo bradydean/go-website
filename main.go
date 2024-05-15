@@ -111,6 +111,7 @@ func main() {
 	e.GET("/", handlers.NewIndexHandler().Handler)
 	e.GET("/profile", handlers.NewProfileHandler().Handler, authentication.IsAuthenticated)
 	e.GET("/lists", handlers.NewListsHandler(db).Handler, authentication.IsAuthenticated)
+	e.POST("/lists", handlers.NewNewListHandler(db).Handler, authentication.IsAuthenticated)
 	e.GET("/lists/:list_id", handlers.NewItemsHandler(db).Handler, authentication.IsAuthenticated)
 	e.DELETE("/lists/:list_id", handlers.NewDeleteListHandler(db).Handler, authentication.IsAuthenticated)
 
