@@ -54,8 +54,9 @@ func (h listsHandler) Handler(c echo.Context) error {
 
 	for _, record := range records {
 		lists = append(lists, components.List{
-			Title: record.Title,
-			Url:   fmt.Sprintf("/lists/%d/items", record.ListID),
+			ListID: record.ListID,
+			Title:  record.Title,
+			Url:    fmt.Sprintf("/lists/%d", record.ListID),
 		})
 	}
 
