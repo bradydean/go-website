@@ -42,10 +42,6 @@ func (h itemsHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to get profile: %w", err)
 	}
 
-	type ListRecord struct {
-		Title string `db:"lists.title"`
-	}
-
 	listQuery, listArgs := pg.SELECT(todo.Lists.Title).
 		FROM(todo.Lists).
 		WHERE(
@@ -55,7 +51,7 @@ func (h itemsHandler) Handler(c echo.Context) error {
 		Sql()
 
 	listRows, _ := h.db.Query(c.Request().Context(), listQuery, listArgs...)
-	listRecord, err := pgx.CollectOneRow(listRows, pgx.RowToStructByName[ListRecord])
+	title, err := pgx.CollectOneRow(listRows, pgx.RowTo[string])
 
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -94,9 +90,9 @@ func (h itemsHandler) Handler(c echo.Context) error {
 	}
 
 	if c.Request().Header.Get("HX-Boosted") != "" {
-		return components.Render(c, http.StatusOK, components.Boost(listRecord.Title, components.Items(profile, listRecord.Title, items)))
+		return components.Render(c, http.StatusOK, components.Boost(title, components.Items(profile, title, items)))
 	}
 
-	layout := components.Layout(listRecord.Title, components.Items(profile, listRecord.Title, items))
+	layout := components.Layout(title, components.Items(profile, title, items))
 	return components.Render(c, http.StatusOK, layout)
 }
