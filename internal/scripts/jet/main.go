@@ -29,7 +29,7 @@ func main() {
 	)
 
 	if err != nil {
-		slog.Error("Error running jet: %v", err)
+		slog.Error("Error running jet: %w", err)
 		os.Exit(1)
 	}
 }
