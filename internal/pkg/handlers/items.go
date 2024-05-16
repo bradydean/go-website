@@ -94,7 +94,12 @@ func (h itemsHandler) Handler(c echo.Context) error {
 	items := make([]components.Item, 0, len(itemRecords))
 
 	for _, record := range itemRecords {
-		items = append(items, components.Item(record))
+		items = append(items, components.Item{
+			ItemID:     record.ItemID,
+			Content:    record.Content,
+			IsComplete: record.IsComplete,
+			Url:        fmt.Sprintf("/lists/%d/items/%d", listID, record.ItemID),
+		})
 	}
 
 	if c.Request().Header.Get("HX-Boosted") != "" {

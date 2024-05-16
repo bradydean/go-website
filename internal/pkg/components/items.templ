@@ -1,6 +1,8 @@
 package components
 
 import (
+	"fmt"
+
 	"github.com/bradydean/go-website/internal/pkg/profile"
 )
 
@@ -8,28 +10,40 @@ type Item struct {
 	ItemID     int64
 	Content    string
 	IsComplete bool
+	Url        string
 }
 
 templ Items(profile profile.Profile, title, description string, items []Item) {
 	@Navbar(&profile)
 	<main>
 		<div class="flex justify-center">
-			<ul class="menu bg-base-200 w-56 rounded-box text-xl">
-				<li class="menu-title">{ title }</li>
-				if len(description) != 0 {
-					<li class="menu-title">{ description }</li>
-				}
-				for _, list := range items {
-					<li>
+			<ul class="menu bg-base-200 w-96 rounded-box text-xl">
+				<div class="grid grid-cols-2">
+					<li class="menu-title">{ title }</li>
+					if len(description) != 0 {
+						<li class="menu-title items-end">{ description }</li>
+					}
+				</div>
+				for _, item := range items {
+					<li id={ fmt.Sprintf("item-%d", item.ItemID) }>
 						<div class="flex">
-							<p>{ list.Content }</p>
 							<input
 								type="checkbox"
 								class="checkbox"
-								if list.IsComplete {
+								if item.IsComplete {
 									checked
 								}
 							/>
+							<p class="grow">{ item.Content }</p>
+							<button
+								class="btn btn-sm"
+								hx-delete={ item.Url }
+								hx-confirm="Are you sure you want to delete this item?"
+								hx-target={ fmt.Sprintf("#item-%d", item.ItemID) }
+								hx-swap="outerHTML"
+							>
+								Delete	
+							</button>
 						</div>
 					</li>
 				}
