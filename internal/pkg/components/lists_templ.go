@@ -33,7 +33,7 @@ func openNewListModal() templ.ComponentScript {
 	}
 }
 
-func NewListModal() templ.Component {
+func newListModal() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -46,7 +46,7 @@ func NewListModal() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<dialog id=\"new_list_modal\" class=\"modal\"><form method=\"dialog\" class=\"modal-backdrop\"><button>close</button></form><div class=\"modal-box\"><form hx-boost=\"true\" method=\"POST\"><div class=\"grid grid-cols-6 gap-2\"><p class=\"col-span-6\">Enter a title and description for the new todo list.</p><input class=\"input input-bordered col-span-6\" type=\"text\" autocomplete=\"off\" name=\"title\" placeholder=\"Title\" maxlength=\"50\" required> <input class=\"input input-bordered col-span-6\" type=\"text\" autocomplete=\"off\" name=\"description\" placeholder=\"Description\" maxlength=\"50\"> <button class=\"btn btn-sm grid-span-1 col-start-6\">Create</button></div></form></div></dialog>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<dialog id=\"new_list_modal\" class=\"modal\"><form method=\"dialog\" class=\"modal-backdrop\"><button>close</button></form><div class=\"modal-box\"><form hx-boost=\"true\" method=\"POST\"><div class=\"grid grid-cols-6 gap-2\"><p class=\"col-span-6\">Enter a title and description for the new todo list.</p><input class=\"input input-bordered col-span-6\" type=\"text\" autocomplete=\"off\" name=\"title\" placeholder=\"Title\" minlength=\"1\" maxlength=\"50\" required> <input class=\"input input-bordered col-span-6\" type=\"text\" autocomplete=\"off\" name=\"description\" placeholder=\"Description\" maxlength=\"50\"> <button class=\"btn btn-sm grid-span-1 col-start-6\">Create</button></div></form></div></dialog>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -78,7 +78,7 @@ func Lists(profile profile.Profile, lists []List) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = NewListModal().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = newListModal().Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -144,9 +144,9 @@ func Lists(profile profile.Profile, lists []List) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
-			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(list.Url)
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(string(templ.URL(list.Url)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 67, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/lists.templ`, Line: 67, Col: 47}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
