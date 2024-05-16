@@ -16,40 +16,52 @@ script openNewListModal() {
 	new_list_modal.showModal()
 }
 
+templ NewListModal() {
+	<dialog id="new_list_modal" class="modal">
+		<form method="dialog" class="modal-backdrop">
+			<button>close</button>
+		</form>
+		<div class="modal-box">
+			<form
+				hx-boost="true"
+				method="POST"
+				method="dialog"
+			>
+				<div class="grid grid-cols-6 gap-2">
+					<p class="col-span-6">Enter a title and description for the new todo list.</p>
+					<input class="input input-bordered col-span-6" type="text" name="title" placeholder="Title" maxlength="50" required/>
+					<input class="input input-bordered col-span-6" type="text" name="description" placeholder="Description" maxlength="50"/>
+					<button class="btn btn-sm grid-span-1 col-start-6">Create</button>
+				</div>
+			</form>
+		</div>
+	</dialog>
+}
+
 templ Lists(profile profile.Profile, lists []List) {
 	@Navbar(&profile)
 	<main>
+		@NewListModal()
 		<div class="flex justify-center">
 			<ul class="menu bg-base-200 w-96 rounded-box text-xl">
-				<div class="flex">
-					<li class="menu-title">My Lists</li>
-					<button class="btn btn-sm" onClick={ openNewListModal() }>
-						New List
-					</button>
-					<dialog id="new_list_modal" class="modal">
-						<div class="modal-box">
-							<div class="flex justify-between">
-								<h3>New List</h3>
-								<form method="dialog">
-									<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-								</form>
-							</div>
-							<form
-								hx-boost="true"
-								method="POST"
-								method="dialog"
-							>
-								<input type="text" name="title" placeholder="Title" maxlength="50" required/>
-								<input type="text" name="description" placeholder="Description" maxlength="50"/>
-								<button class="btn btn-sm">Create</button>
-							</form>
-						</div>
-					</dialog>
-				</div>
+				<li class="menu-title">
+					<div class="flex justify-between">
+						<p class="text-center">My Todo Lists</p>
+						<button class="btn btn-sm" onClick={ openNewListModal() }>
+							New List
+						</button>
+					</div>
+				</li>
 				for _, list := range lists {
 					<li id={ fmt.Sprintf("list-%d", list.ListID) }>
 						<div class="flex">
-							<a hx-boost="true" href={ templ.URL(list.Url) }>{ list.Title }</a>
+							<a
+								class="flex-grow"
+								hx-boost="true"
+								href={ templ.URL(list.Url) }
+							>
+								{ list.Title }
+							</a>
 							<button
 								class="btn btn-sm"
 								hx-delete={ list.Url }

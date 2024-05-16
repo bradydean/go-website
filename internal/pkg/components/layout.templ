@@ -16,7 +16,7 @@ templ header(title string) {
 
 templ Navbar(profile *profile.Profile) {
 	<div class="navbar bg-base-100">
-		<div class="flex-1">
+		<div class="flex-1 gap-2">
 			<a href="/" hx-boost="true" class="btn text-xl">Home</a>
 			if profile != nil {
 				<a href="/lists" hx-boost="true" class="btn text-xl">Lists</a>

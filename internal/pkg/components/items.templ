@@ -10,12 +10,15 @@ type Item struct {
 	IsComplete bool
 }
 
-templ Items(profile profile.Profile, title string, items []Item) {
+templ Items(profile profile.Profile, title, description string, items []Item) {
 	@Navbar(&profile)
 	<main>
 		<div class="flex justify-center">
 			<ul class="menu bg-base-200 w-56 rounded-box text-xl">
 				<li class="menu-title">{ title }</li>
+				if len(description) != 0 {
+					<li class="menu-title">{ description }</li>
+				}
 				for _, list := range items {
 					<li>
 						<div class="flex">
