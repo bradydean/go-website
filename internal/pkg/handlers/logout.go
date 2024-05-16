@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -25,7 +26,7 @@ func (h logoutHandler) Handler(c echo.Context) error {
 
 	scheme := "http"
 
-	if c.Request().TLS != nil {
+	if strings.HasPrefix(os.Getenv("AUTH0_CALLBACK_URL"), "https") {
 		scheme = "https"
 	}
 
