@@ -22,16 +22,16 @@ func NewListsHandler(db *pgxpool.Pool) listsHandler {
 	return listsHandler{db: db}
 }
 
-type listsRecord struct {
-	ListID int64  `db:"lists.list_id"`
-	Title  string `db:"lists.title"`
-}
-
 func (h listsHandler) Handler(c echo.Context) error {
 	profile, err := profile.MustGet(c)
 
 	if err != nil {
 		return fmt.Errorf("failed to get profile: %w", err)
+	}
+
+	type listRecord struct {
+		ListID int64  `db:"lists.list_id"`
+		Title  string `db:"lists.title"`
 	}
 
 	query, args := pg.SELECT(
@@ -44,7 +44,7 @@ func (h listsHandler) Handler(c echo.Context) error {
 		Sql()
 
 	rows, _ := h.db.Query(c.Request().Context(), query, args...)
-	records, err := pgx.CollectRows(rows, pgx.RowToStructByName[listsRecord])
+	records, err := pgx.CollectRows(rows, pgx.RowToStructByName[listRecord])
 
 	if err != nil {
 		return fmt.Errorf("failed to fetch lists: %w", err)

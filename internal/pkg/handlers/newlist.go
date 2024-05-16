@@ -57,22 +57,39 @@ func (h newListHandler) Handler(c echo.Context) error {
 			description,
 			profile.UserID,
 		).
-		RETURNING(todo.Lists.ListID).
+		RETURNING(
+			todo.Lists.ListID,
+			todo.Lists.Title,
+			todo.Lists.Description,
+		).
 		Sql()
 
+	type listRecord struct {
+		ListID      int64  `db:"lists.list_id"`
+		Title       string `db:"lists.title"`
+		Description string `db:"lists.description"`
+	}
+
 	rows, _ := h.db.Query(c.Request().Context(), query, args...)
-	listID, err := pgx.CollectOneRow(rows, pgx.RowTo[int64])
+	record, err := pgx.CollectOneRow(rows, pgx.RowToStructByName[listRecord])
 
 	if err != nil {
 		return fmt.Errorf("failed to create list: %w", err)
 	}
 
-	c.Response().Header().Set("HX-Replace-Url", fmt.Sprintf("/lists/%d", listID))
+	c.Response().Header().Set("HX-Replace-Url", fmt.Sprintf("/lists/%d", record.ListID))
 
-	if c.Request().Header.Get("HX-Boosted") != "" {
-		return components.Render(c, http.StatusCreated, components.Items(profile, title, description, nil))
+	list := components.List{
+		ListID:      record.ListID,
+		Title:       record.Title,
+		Description: record.Description,
+		Url:         fmt.Sprintf("/lists/%d", record.ListID),
 	}
 
-	layout := components.Layout(title, components.Items(profile, title, description, nil))
+	if c.Request().Header.Get("HX-Boosted") != "" {
+		return components.Render(c, http.StatusCreated, components.Items(profile, list, nil))
+	}
+
+	layout := components.Layout(title, components.Items(profile, list, nil))
 	return components.Render(c, http.StatusCreated, layout)
 }

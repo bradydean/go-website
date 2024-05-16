@@ -43,6 +43,7 @@ func (h itemsHandler) Handler(c echo.Context) error {
 	}
 
 	listQuery, listArgs := pg.SELECT(
+		todo.Lists.ListID,
 		todo.Lists.Title,
 		todo.Lists.Description,
 	).
@@ -54,6 +55,7 @@ func (h itemsHandler) Handler(c echo.Context) error {
 		Sql()
 
 	type ListRecord struct {
+		ListID      int64  `db:"lists.list_id"`
 		Title       string `db:"lists.title"`
 		Description string `db:"lists.description"`
 	}
@@ -91,6 +93,13 @@ func (h itemsHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to fetch items: %w", err)
 	}
 
+	list := components.List{
+		ListID:      listRecord.ListID,
+		Title:       listRecord.Title,
+		Description: listRecord.Description,
+		Url:         fmt.Sprintf("/lists/%d", listRecord.ListID),
+	}
+
 	items := make([]components.Item, 0, len(itemRecords))
 
 	for _, record := range itemRecords {
@@ -103,9 +112,9 @@ func (h itemsHandler) Handler(c echo.Context) error {
 	}
 
 	if c.Request().Header.Get("HX-Boosted") != "" {
-		return components.Render(c, http.StatusOK, components.Boost(listRecord.Title, components.Items(profile, listRecord.Title, listRecord.Description, items)))
+		return components.Render(c, http.StatusOK, components.Boost(listRecord.Title, components.Items(profile, list, items)))
 	}
 
-	layout := components.Layout(listRecord.Title, components.Items(profile, listRecord.Title, listRecord.Description, items))
+	layout := components.Layout(listRecord.Title, components.Items(profile, list, items))
 	return components.Render(c, http.StatusOK, layout)
 }

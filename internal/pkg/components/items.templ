@@ -13,6 +13,31 @@ type Item struct {
 	Url        string
 }
 
+script openNewItemModal() {
+	new_item_modal.showModal()
+}
+
+templ NewItemModal(listID int64) {
+	<dialog id="new_item_modal" class="modal">
+		<form method="dialog" class="modal-backdrop">
+			<button>close</button>
+		</form>
+		<div class="modal-box">
+			<form
+				hx-boost="true"
+				method="POST"
+				action={ templ.URL(fmt.Sprintf("/lists/%d/items", listID)) }
+			>
+				<div class="grid grid-cols-6 gap-2">
+					<p class="col-span-6">Enter a new todo list item.</p>
+					<input class="input input-bordered col-span-6" type="text" autocomplete="off" name="content" placeholder="Content" maxlength="50" required/>
+					<button class="btn btn-sm grid-span-1 col-start-6">Create</button>
+				</div>
+			</form>
+		</div>
+	</dialog>
+}
+
 templ ListItem(item Item) {
 	<li id={ fmt.Sprintf("item-%d", item.ItemID) }>
 		<div class="flex">
@@ -53,20 +78,31 @@ templ ListItem(item Item) {
 	</li>
 }
 
-templ Items(profile profile.Profile, title, description string, items []Item) {
+templ Items(profile profile.Profile, list List, items []Item) {
 	@Navbar(&profile)
 	<main>
+		@NewItemModal(list.ListID)
 		<div class="flex justify-center">
 			<ul class="menu bg-base-200 rounded-box text-xl">
 				<div class="grid grid-cols-2 gap-2">
-					<li class="menu-title">{ title }</li>
-					if len(description) != 0 {
-						<li class="menu-title items-end">{ description }</li>
+					<li class="menu-title">{ list.Title }</li>
+					if len(list.Description) != 0 {
+						<li class="menu-title items-end">{ list.Description }</li>
 					}
 				</div>
 				for _, item := range items {
 					@ListItem(item)
 				}
+				<li>
+					<div class="flex justify-end">
+						<button
+							class="btn btn-sm"
+							onClick={ openNewItemModal() }
+						>
+							New Item
+						</button>
+					</div>
+				</li>
 			</ul>
 		</div>
 	</main>
