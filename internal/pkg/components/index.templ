@@ -6,4 +6,13 @@ import (
 
 templ Index(profile *profile.Profile) {
 	@Navbar(profile)
+	<main>
+		<div class="flex justify-center">
+			if profile != nil {
+				Go to your lists to get started.
+			} else {
+				Sign in or register to get started.
+			}
+		</div>
+	</main>
 }
