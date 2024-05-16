@@ -70,9 +70,9 @@ func (h newListHandler) Handler(c echo.Context) error {
 	c.Response().Header().Set("HX-Replace-Url", fmt.Sprintf("/lists/%d", listID))
 
 	if c.Request().Header.Get("HX-Boosted") != "" {
-		return components.Render(c, http.StatusOK, components.Items(profile, title, nil))
+		return components.Render(c, http.StatusCreated, components.Items(profile, title, nil))
 	}
 
 	layout := components.Layout(title, components.Items(profile, title, nil))
-	return components.Render(c, http.StatusOK, layout)
+	return components.Render(c, http.StatusCreated, layout)
 }
