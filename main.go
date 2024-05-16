@@ -115,6 +115,7 @@ func main() {
 	e.GET("/lists/:list_id", handlers.NewItemsHandler(db).Handler, authentication.IsAuthenticated)
 	e.DELETE("/lists/:list_id", handlers.NewDeleteListHandler(db).Handler, authentication.IsAuthenticated)
 	e.DELETE("/lists/:list_id/items/:item_id", handlers.NewDeleteItemHandler(db).Handler, authentication.IsAuthenticated)
+	e.PATCH("/lists/:list_id/items/:item_id", handlers.NewPatchItemHandler(db).Handler, authentication.IsAuthenticated)
 
 	go func() {
 		port := os.Getenv("PORT")

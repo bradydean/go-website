@@ -13,6 +13,35 @@ type Item struct {
 	Url        string
 }
 
+templ ListItem(item Item) {
+	<li id={ fmt.Sprintf("item-%d", item.ItemID) }>
+		<div class="flex">
+			<input
+				hx-patch={ item.Url }
+				hx-trigger="change"
+				hx-target={ fmt.Sprintf("#item-%d", item.ItemID) }
+				type="checkbox"
+				class="checkbox"
+				hx-swap="outerHTML"
+				hx-vals='js:{"is_complete": event.target.checked}'
+				if item.IsComplete {
+					checked
+				}
+			/>
+			<p class="grow">{ item.Content }</p>
+			<button
+				class="btn btn-sm"
+				hx-delete={ item.Url }
+				hx-confirm="Are you sure you want to delete this item?"
+				hx-target={ fmt.Sprintf("#item-%d", item.ItemID) }
+				hx-swap="outerHTML"
+			>
+				Delete	
+			</button>
+		</div>
+	</li>
+}
+
 templ Items(profile profile.Profile, title, description string, items []Item) {
 	@Navbar(&profile)
 	<main>
@@ -25,27 +54,7 @@ templ Items(profile profile.Profile, title, description string, items []Item) {
 					}
 				</div>
 				for _, item := range items {
-					<li id={ fmt.Sprintf("item-%d", item.ItemID) }>
-						<div class="flex">
-							<input
-								type="checkbox"
-								class="checkbox"
-								if item.IsComplete {
-									checked
-								}
-							/>
-							<p class="grow">{ item.Content }</p>
-							<button
-								class="btn btn-sm"
-								hx-delete={ item.Url }
-								hx-confirm="Are you sure you want to delete this item?"
-								hx-target={ fmt.Sprintf("#item-%d", item.ItemID) }
-								hx-swap="outerHTML"
-							>
-								Delete	
-							</button>
-						</div>
-					</li>
+					@ListItem(item)
 				}
 			</ul>
 		</div>
