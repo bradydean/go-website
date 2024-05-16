@@ -45,6 +45,7 @@ func main() {
 		LogStatus:   true,
 		LogURI:      true,
 		LogError:    true,
+		LogMethod:   true,
 		HandleError: true,
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
 			var level slog.Level
@@ -58,14 +59,16 @@ func main() {
 			}
 
 			if v.Error == nil {
-				msg := fmt.Sprintf("uri=%s status=%d", v.URI, v.Status)
+				msg := fmt.Sprintf("method=%s uri=%s status=%d", v.Method, v.URI, v.Status)
 				logger.LogAttrs(context.Background(), level, msg,
+					slog.String("method", v.Method),
 					slog.String("uri", v.URI),
 					slog.Int("status", v.Status),
 				)
 			} else {
-				msg := fmt.Sprintf("uri=%s status=%d err=%v", v.URI, v.Status, v.Error)
+				msg := fmt.Sprintf("method=%s uri=%s status=%d err=%v", v.Method, v.URI, v.Status, v.Error)
 				logger.LogAttrs(context.Background(), level, msg,
+					slog.String("method", v.Method),
 					slog.String("uri", v.URI),
 					slog.Int("status", v.Status),
 					slog.String("err", v.Error.Error()),
