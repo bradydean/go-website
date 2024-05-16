@@ -45,7 +45,7 @@ func NewListModal() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<dialog id=\"new_list_modal\" class=\"modal\"><form method=\"dialog\" class=\"modal-backdrop\"><button>close</button></form><div class=\"modal-box\"><form hx-boost=\"true\" method=\"POST\" method=\"dialog\"><div class=\"grid grid-cols-6 gap-2\"><p class=\"col-span-6\">Enter a title and description for the new todo list.</p><input class=\"input input-bordered col-span-6\" type=\"text\" name=\"title\" placeholder=\"Title\" maxlength=\"50\" required> <input class=\"input input-bordered col-span-6\" type=\"text\" name=\"description\" placeholder=\"Description\" maxlength=\"50\"> <button class=\"btn btn-sm grid-span-1 col-start-6\">Create</button></div></form></div></dialog>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<dialog id=\"new_list_modal\" class=\"modal\"><form method=\"dialog\" class=\"modal-backdrop\"><button>close</button></form><div class=\"modal-box\"><form hx-boost=\"true\" method=\"POST\" method=\"dialog\"><div class=\"grid grid-cols-6 gap-2\"><p class=\"col-span-6\">Enter a title and description for the new todo list.</p><input class=\"input input-bordered col-span-6\" type=\"text\" autocomplete=\"off\" name=\"title\" placeholder=\"Title\" maxlength=\"50\" required> <input class=\"input input-bordered col-span-6\" type=\"text\" autocomplete=\"off\" name=\"description\" placeholder=\"Description\" maxlength=\"50\"> <button class=\"btn btn-sm grid-span-1 col-start-6\">Create</button></div></form></div></dialog>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
