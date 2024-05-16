@@ -25,7 +25,7 @@ func NewNewListHandler(db *pgxpool.Pool) newListHandler {
 func (h newListHandler) Handler(c echo.Context) error {
 	var title, description string
 
-	if err := echo.FormFieldBinder(c).MustString("title", &title).MustString("description", &description).BindError(); err != nil {
+	if err := echo.FormFieldBinder(c).MustString("title", &title).String("description", &description).BindError(); err != nil {
 		return err
 	}
 
@@ -37,8 +37,8 @@ func (h newListHandler) Handler(c echo.Context) error {
 
 	descriptionLen := utf8.RuneCountInString(description)
 
-	if descriptionLen == 0 || descriptionLen > 50 {
-		return echo.NewHTTPError(http.StatusUnprocessableEntity, "description must be between 1 and 50 characters")
+	if descriptionLen > 50 {
+		return echo.NewHTTPError(http.StatusUnprocessableEntity, "description must be at most 50 characters")
 	}
 
 	profile, err := profile.MustGet(c)
