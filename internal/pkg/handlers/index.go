@@ -24,9 +24,9 @@ func (h indexHandler) Handler(c echo.Context) error {
 	}
 
 	if c.Request().Header.Get("HX-Boosted") != "" {
-		return components.Render(c, http.StatusOK, components.Boost("Go Website", components.Index(profile)))
+		return components.Render(c, http.StatusOK, components.Boost("Todo Lists", components.Index(profile)))
 	}
 
-	layout := components.Layout("Go Website", components.Index(profile))
+	layout := components.Layout("Todo Lists", components.Index(profile))
 	return components.Render(c, http.StatusOK, layout)
 }
