@@ -43,8 +43,11 @@ func (h patchItemHandler) Handler(c echo.Context) error {
 		return err
 	}
 
-	if params.Content != nil && utf8.RuneCountInString(*params.Content) > 50 {
-		return echo.NewHTTPError(http.StatusUnprocessableEntity, "content must be 50 characters or less")
+	if params.Content != nil {
+		contentLenth := utf8.RuneCountInString(*params.Content)
+		if contentLenth == 0 || contentLenth > 50 {
+			return echo.NewHTTPError(http.StatusUnprocessableEntity, "content must be between 1 and 50 characters")
+		}
 	}
 
 	profile, err := profile.MustGet(c)
