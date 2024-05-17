@@ -39,7 +39,7 @@ func (h loginHandler) Handler(c echo.Context) error {
 
 	secure := true
 
-	if strings.HasPrefix(os.Getenv("AUTH0_CALLBACK_URL"), "http://") {
+	if strings.HasPrefix(os.Getenv("APP_URL"), "http://") {
 		secure = false
 	}
 

@@ -26,7 +26,7 @@ export DATABASE_URL=postgres://user:password@localhost:5432/dbname?sslmode=disab
 export AUTH0_DOMAIN=your.auth0.com
 export AUTH0_CLIENT_ID=your-auth0-client-id
 export AUTH0_CLIENT_SECRET=your-auth0-client-secret
-export AUTH0_CALLBACK_URL=http://localhost:8000/callback
+export APP_URL=http://localhost:8000
 export SESSION_KEY=$(openssl rand -base64 32)
 export PORT=8000
 ```

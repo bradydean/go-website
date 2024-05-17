@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
 
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -24,13 +23,7 @@ func (h logoutHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to parse logout url: %w", err)
 	}
 
-	scheme := "http"
-
-	if strings.HasPrefix(os.Getenv("AUTH0_CALLBACK_URL"), "https") {
-		scheme = "https"
-	}
-
-	returnTo, err := url.Parse(scheme + "://" + c.Request().Host)
+	returnTo, err := url.Parse(os.Getenv("APP_URL"))
 
 	if err != nil {
 		return fmt.Errorf("failed to parse returnTo url: %w", err)
