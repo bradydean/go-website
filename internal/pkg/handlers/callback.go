@@ -55,8 +55,6 @@ func (h callbackHandler) Handler(c echo.Context) error {
 	}
 
 	sess.Values[profile.ProfileKey{}] = claims
-	sess.Values["accessToken"] = token.AccessToken
-	sess.Values["refreshToken"] = token.RefreshToken
 
 	if err := sess.Save(c.Request(), c.Response()); err != nil {
 		return fmt.Errorf("failed to save session: %w", err)
