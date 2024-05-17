@@ -71,5 +71,12 @@ func (h loginHandler) Handler(c echo.Context) error {
 		additionalParams = append(additionalParams, oauth2.SetAuthURLParam("invitation", invitation))
 	}
 
+	returnTo := c.QueryParam("returnTo")
+
+	if returnTo != "" && strings.HasPrefix(returnTo, os.Getenv("APP_URL")) {
+		callback := os.Getenv("APP_URL") + "/callback?returnTo=" + returnTo
+		additionalParams = append(additionalParams, oauth2.SetAuthURLParam("redirect_uri", callback))
+	}
+
 	return c.Redirect(http.StatusTemporaryRedirect, h.Authenticator.AuthCodeURL(state, additionalParams...))
 }

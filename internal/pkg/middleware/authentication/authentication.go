@@ -3,6 +3,8 @@ package authentication
 import (
 	"fmt"
 	"net/http"
+	"net/url"
+	"os"
 
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -19,7 +21,15 @@ func IsAuthenticated(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		if sess.Values[profile.ProfileKey{}] == nil {
-			return c.Redirect(http.StatusTemporaryRedirect, "/login")
+			returnTo, err := url.Parse(os.Getenv("APP_URL") + "/")
+
+			if err != nil {
+				return fmt.Errorf("failed to parse returnTo url: %w", err)
+			}
+
+			returnTo = returnTo.JoinPath(c.Request().URL.Path)
+
+			return c.Redirect(http.StatusTemporaryRedirect, "/login?returnTo="+returnTo.String())
 		}
 
 		return next(c)

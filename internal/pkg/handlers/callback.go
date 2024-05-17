@@ -3,6 +3,8 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 
@@ -56,6 +58,12 @@ func (h callbackHandler) Handler(c echo.Context) error {
 
 	if err := sess.Save(c.Request(), c.Response()); err != nil {
 		return fmt.Errorf("failed to save session: %w", err)
+	}
+
+	returnTo := c.QueryParam("returnTo")
+
+	if returnTo != "" && strings.HasPrefix(returnTo, os.Getenv("APP_URL")) {
+		return c.Redirect(http.StatusTemporaryRedirect, returnTo)
 	}
 
 	return c.Redirect(http.StatusTemporaryRedirect, "/")
