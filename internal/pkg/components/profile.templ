@@ -7,10 +7,14 @@ import (
 templ Profile(profile profile.Profile) {
 	@Navbar(&profile)
 	<main>
-		<div>
-			<h1>Hello, { profile.Name }!</h1>
-			<p>Your email is { profile.Email }</p>
-			<p>User ID { profile.UserID }</p>
+		<div class="flex justify-center">
+			<button
+				class="btn btn-sm btn-error"
+				hx-post="/profile/reset-password"
+				hx-swap="none"
+			>
+				Reset Password
+			</button>
 		</div>
 	</main>
 }

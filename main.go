@@ -113,6 +113,7 @@ func main() {
 	e.GET("/callback", handlers.NewCallbackHandler(auth).Handler)
 	e.GET("/", handlers.NewIndexHandler().Handler)
 	e.GET("/profile", handlers.NewProfileHandler().Handler, authentication.IsAuthenticated)
+	e.POST("/profile/reset-password", handlers.NewResetPasswordHandler().Handler, authentication.IsAuthenticated)
 	e.GET("/lists", handlers.NewListsHandler(db).Handler, authentication.IsAuthenticated)
 	e.POST("/lists", handlers.NewNewListHandler(db).Handler, authentication.IsAuthenticated)
 	e.GET("/lists/:list_id", handlers.NewItemsHandler(db).Handler, authentication.IsAuthenticated)
