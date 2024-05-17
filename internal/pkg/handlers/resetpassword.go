@@ -25,7 +25,12 @@ func (h resetPasswordHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to get profile: %w", err)
 	}
 
-	body := map[string]string{"client_id": os.Getenv("AUTH0_CLIENT_ID"), "email": profile.Email, "connection": os.Getenv("AUTH0_CONNECTION")}
+	body := map[string]string{
+		"client_id": os.Getenv("AUTH0_CLIENT_ID"), 
+		"email": profile.Email, 
+		"connection": os.Getenv("AUTH0_CONNECTION"),
+	}
+
 	jsonBody, err := json.Marshal(body)
 
 	if err != nil {
