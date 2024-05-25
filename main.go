@@ -93,7 +93,7 @@ func main() {
 	e.Use(middleware.SecureWithConfig(middleware.SecureConfig{
 		XSSProtection: "0",	
 		XFrameOptions: "DENY",
-		HSTSMaxAge:    31536000,
+		HSTSMaxAge:    63072000,
 	}))
 
 	session, err := session.New()
