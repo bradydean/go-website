@@ -151,15 +151,15 @@ func Navbar(profile *profile.Profile) templ.Component {
 
 func csrf(csrfToken string) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_csrf_e04a`,
-		Function: `function __templ_csrf_e04a(csrfToken){htmx.onLoad(function(target) {
+		Name: `__templ_csrf_6851`,
+		Function: `function __templ_csrf_6851(csrfToken){window.addEventListener('load', function () {
 		document.body.addEventListener('htmx:configRequest', (event) => {
 			event.detail.headers['X-CSRF-Token'] = csrfToken;
 		});
-	})
+	});
 }`,
-		Call:       templ.SafeScript(`__templ_csrf_e04a`, csrfToken),
-		CallInline: templ.SafeScriptInline(`__templ_csrf_e04a`, csrfToken),
+		Call:       templ.SafeScript(`__templ_csrf_6851`, csrfToken),
+		CallInline: templ.SafeScriptInline(`__templ_csrf_6851`, csrfToken),
 	}
 }
 
