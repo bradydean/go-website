@@ -4,12 +4,13 @@ import (
 	"github.com/bradydean/go-website/internal/pkg/profile"
 )
 
-templ header(title string) {
+templ header(title, csrfToken string) {
 	<head>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>{ title }</title>
 		<script src="/static/htmx.min.js"></script>
+		@csrf(csrfToken)
 		<link href="/static/tailwind.css" rel="stylesheet"/>
 	</head>
 }
@@ -55,9 +56,17 @@ templ Navbar(profile *profile.Profile) {
 	</div>
 }
 
-templ Layout(title string, content templ.Component) {
+script csrf(csrfToken string) {
+	htmx.onLoad(function(target) {
+		document.body.addEventListener('htmx:configRequest', (event) => {
+			event.detail.headers['X-CSRF-Token'] = csrfToken;
+		});
+	})
+}
+
+templ Layout(title string, csrfToken string, content templ.Component) {
 	<!DOCTYPE html>
-	@header(title)
+	@header(title, csrfToken)
 	<body>
 		@content
 	</body>

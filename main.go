@@ -92,8 +92,8 @@ func main() {
 	}))
 
 	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
-		TokenLookup:  "form:_csrf,header:X-CSRF-Token",
-		CookieSecure: strings.HasPrefix(os.Getenv("APP_URL"), "https://"),
+		CookieSecure:   strings.HasPrefix(os.Getenv("APP_URL"), "https://"),
+		CookieHTTPOnly: true,
 	}))
 
 	session, err := session.New()

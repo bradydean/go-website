@@ -87,9 +87,9 @@ func (h newListHandler) Handler(c echo.Context) error {
 	}
 
 	if c.Request().Header.Get("HX-Boosted") != "" {
-		return components.Render(c, http.StatusCreated, components.Items(profile, list, nil, c.Get("csrf").(string)))
+		return components.Render(c, http.StatusCreated, components.Items(profile, list, nil))
 	}
 
-	layout := components.Layout(title, components.Items(profile, list, nil, c.Get("csrf").(string)))
+	layout := components.Layout(title, c.Get("csrf").(string), components.Items(profile, list, nil))
 	return components.Render(c, http.StatusCreated, layout)
 }

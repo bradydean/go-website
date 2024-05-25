@@ -4,7 +4,7 @@ import (
 	"github.com/bradydean/go-website/internal/pkg/profile"
 )
 
-templ Profile(profile profile.Profile, csrfToken string) {
+templ Profile(profile profile.Profile) {
 	@Navbar(&profile)
 	<main>
 		<div class="flex justify-center">
@@ -12,7 +12,6 @@ templ Profile(profile profile.Profile, csrfToken string) {
 				hx-post="/profile/reset-password"
 				hx-swap="none"
 			>
-				<input type="hidden" name="_csrf" value={ csrfToken }/>
 				<input class="btn btn-sm btn-error" type="submit" value="Reset Password"/>
 			</form>
 		</div>

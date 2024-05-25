@@ -17,7 +17,7 @@ script openNewListModal() {
 	new_list_modal.showModal()
 }
 
-templ newListModal(csrfToken string) {
+templ newListModal() {
 	<dialog id="new_list_modal" class="modal">
 		<form method="dialog" class="modal-backdrop">
 			<button>close</button>
@@ -31,7 +31,6 @@ templ newListModal(csrfToken string) {
 					<p class="col-span-6">Enter a title and description for the new todo list.</p>
 					<input class="input input-bordered col-span-6" type="text" autocomplete="off" name="title" placeholder="Title" minlength="1" maxlength="50" required/>
 					<input class="input input-bordered col-span-6" type="text" autocomplete="off" name="description" placeholder="Description" maxlength="50"/>
-					<input type="hidden" name="_csrf" value={ csrfToken }/>
 					<button class="btn btn-sm grid-span-1 col-start-6">Create</button>
 				</div>
 			</form>
@@ -39,10 +38,10 @@ templ newListModal(csrfToken string) {
 	</dialog>
 }
 
-templ Lists(profile profile.Profile, lists []List, csrfToken string) {
+templ Lists(profile profile.Profile, lists []List) {
 	@Navbar(&profile)
 	<main>
-		@newListModal(csrfToken)
+		@newListModal()
 		<div class="flex justify-center">
 			<ul class="menu bg-base-200 w-96 rounded-box text-xl">
 				<li class="menu-title">
@@ -69,7 +68,6 @@ templ Lists(profile profile.Profile, lists []List, csrfToken string) {
 								hx-confirm="Are you sure you want to delete this list?"
 								hx-target={ fmt.Sprintf("#list-%d", list.ListID) }
 								hx-swap="outerHTML"
-								hx-headers={ fmt.Sprintf("{\"X-CSRF-Token\": \"%s\"}", csrfToken) }
 							>
 								Delete
 							</button>

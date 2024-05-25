@@ -23,8 +23,8 @@ func (h profileHandler) Handler(c echo.Context) error {
 	}
 
 	if c.Request().Header.Get("HX-Boosted") != "" {
-		return components.Render(c, http.StatusOK, components.Boost("Profile", components.Profile(profile, c.Get("csrf").(string))))
+		return components.Render(c, http.StatusOK, components.Boost("Profile", components.Profile(profile)))
 	}
 
-	return components.Render(c, http.StatusOK, components.Layout("Profile", components.Profile(profile, c.Get("csrf").(string))))
+	return components.Render(c, http.StatusOK, components.Layout("Profile", c.Get("csrf").(string), components.Profile(profile)))
 }

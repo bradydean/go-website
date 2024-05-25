@@ -98,5 +98,5 @@ func (h newItemHandler) Handler(c echo.Context) error {
 		Url:        fmt.Sprintf("/lists/%d/items/%d", listID, record.ItemID),
 	}
 
-	return components.Render(c, http.StatusCreated, components.ListItem(item, c.Get("csrf").(string)))
+	return components.Render(c, http.StatusCreated, components.ListItem(item))
 }

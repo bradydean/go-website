@@ -14,7 +14,7 @@ import (
 	"github.com/bradydean/go-website/internal/pkg/profile"
 )
 
-func header(title string) templ.Component {
+func header(title, csrfToken string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -40,7 +40,15 @@ func header(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><script src=\"/static/htmx.min.js\"></script><link href=\"/static/tailwind.css\" rel=\"stylesheet\"></head>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><script src=\"/static/htmx.min.js\"></script>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = csrf(csrfToken).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<link href=\"/static/tailwind.css\" rel=\"stylesheet\"></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -86,7 +94,7 @@ func Navbar(profile *profile.Profile) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(profile.Name + " profile picture")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/layout.templ`, Line: 30, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/layout.templ`, Line: 31, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -99,7 +107,7 @@ func Navbar(profile *profile.Profile) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(profile.Picture)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/layout.templ`, Line: 30, Col: 75}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pkg/components/layout.templ`, Line: 31, Col: 75}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -141,7 +149,21 @@ func Navbar(profile *profile.Profile) templ.Component {
 	})
 }
 
-func Layout(title string, content templ.Component) templ.Component {
+func csrf(csrfToken string) templ.ComponentScript {
+	return templ.ComponentScript{
+		Name: `__templ_csrf_e04a`,
+		Function: `function __templ_csrf_e04a(csrfToken){htmx.onLoad(function(target) {
+		document.body.addEventListener('htmx:configRequest', (event) => {
+			event.detail.headers['X-CSRF-Token'] = csrfToken;
+		});
+	})
+}`,
+		Call:       templ.SafeScript(`__templ_csrf_e04a`, csrfToken),
+		CallInline: templ.SafeScriptInline(`__templ_csrf_e04a`, csrfToken),
+	}
+}
+
+func Layout(title string, csrfToken string, content templ.Component) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -158,7 +180,7 @@ func Layout(title string, content templ.Component) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = header(title).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = header(title, csrfToken).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
