@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -88,6 +89,11 @@ func main() {
 			)
 			return err
 		},
+	}))
+
+	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
+		TokenLookup:  "form:_csrf,header:X-CSRF-Token",
+		CookieSecure: strings.HasPrefix(os.Getenv("APP_URL"), "https://"),
 	}))
 
 	session, err := session.New()

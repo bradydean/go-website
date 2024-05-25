@@ -113,5 +113,5 @@ func (h patchItemHandler) Handler(c echo.Context) error {
 		Url:        fmt.Sprintf("/lists/%d/items/%d", listID, itemID),
 	}
 
-	return components.Render(c, http.StatusOK, components.ListItem(item))
+	return components.Render(c, http.StatusOK, components.ListItem(item, c.Get("csrf").(string)))
 }

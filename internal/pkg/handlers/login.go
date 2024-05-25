@@ -37,18 +37,12 @@ func (h loginHandler) Handler(c echo.Context) error {
 		return fmt.Errorf("failed to get session: %w", err)
 	}
 
-	secure := true
-
-	if strings.HasPrefix(os.Getenv("APP_URL"), "http://") {
-		secure = false
-	}
-
 	sess.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   86400 * 7,
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
-		Secure:   secure,
+		Secure:   strings.HasPrefix(os.Getenv("APP_URL"), "https://"),
 	}
 
 	sess.Values["state"] = state

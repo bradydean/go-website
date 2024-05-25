@@ -26,8 +26,8 @@ func (h resetPasswordHandler) Handler(c echo.Context) error {
 	}
 
 	body := map[string]string{
-		"client_id": os.Getenv("AUTH0_CLIENT_ID"), 
-		"email": profile.Email, 
+		"client_id":  os.Getenv("AUTH0_CLIENT_ID"),
+		"email":      profile.Email,
 		"connection": os.Getenv("AUTH0_CONNECTION"),
 	}
 

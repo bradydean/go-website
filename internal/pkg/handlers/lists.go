@@ -61,10 +61,10 @@ func (h listsHandler) Handler(c echo.Context) error {
 	}
 
 	if c.Request().Header.Get("HX-Boosted") != "" {
-		return components.Render(c, http.StatusOK, components.Boost("My Lists", components.Lists(profile, lists)))
+		return components.Render(c, http.StatusOK, components.Boost("My Lists", components.Lists(profile, lists, c.Get("csrf").(string))))
 	}
 
-	layout := components.Layout("My Lists", components.Lists(profile, lists))
+	layout := components.Layout("My Lists", components.Lists(profile, lists, c.Get("csrf").(string)))
 
 	return components.Render(c, http.StatusOK, layout)
 }
