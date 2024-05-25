@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"
 
 	"github.com/bradydean/go-website/internal/pkg/authenticator"
@@ -55,6 +56,12 @@ func (h callbackHandler) Handler(c echo.Context) error {
 	}
 
 	sess.Values[profile.ProfileKey{}] = claims
+	sess.Options = &sessions.Options{
+		Path:     "/",
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   strings.HasPrefix(os.Getenv("APP_URL"), "https://"),
+	}
 
 	if err := sess.Save(c.Request(), c.Response()); err != nil {
 		return fmt.Errorf("failed to save session: %w", err)
