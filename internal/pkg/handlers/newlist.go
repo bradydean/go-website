@@ -90,6 +90,6 @@ func (h newListHandler) Handler(c echo.Context) error {
 		return components.Render(c, http.StatusCreated, components.Items(profile, list, nil))
 	}
 
-	layout := components.Layout(title, c.Get("csrf").(string), components.Items(profile, list, nil))
+	layout := components.Layout(title, components.Items(profile, list, nil))
 	return components.Render(c, http.StatusCreated, layout)
 }

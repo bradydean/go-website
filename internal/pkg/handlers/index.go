@@ -27,6 +27,6 @@ func (h indexHandler) Handler(c echo.Context) error {
 		return components.Render(c, http.StatusOK, components.Boost("Todo Lists", components.Index(profile)))
 	}
 
-	layout := components.Layout("Todo Lists", c.Get("csrf").(string), components.Index(profile))
+	layout := components.Layout("Todo Lists", components.Index(profile))
 	return components.Render(c, http.StatusOK, layout)
 }

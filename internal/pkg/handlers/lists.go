@@ -64,7 +64,7 @@ func (h listsHandler) Handler(c echo.Context) error {
 		return components.Render(c, http.StatusOK, components.Boost("My Lists", components.Lists(profile, lists)))
 	}
 
-	layout := components.Layout("My Lists", c.Get("csrf").(string), components.Lists(profile, lists))
+	layout := components.Layout("My Lists", components.Lists(profile, lists))
 
 	return components.Render(c, http.StatusOK, layout)
 }

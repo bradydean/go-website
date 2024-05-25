@@ -69,7 +69,7 @@ func (h itemsHandler) Handler(c echo.Context) error {
 				return components.Render(c, http.StatusNotFound, components.Boost("List Not Found", components.NotFound(&profile)))
 			}
 
-			layout := components.Layout("List Not Found", c.Get("csrf").(string), components.NotFound(&profile))
+			layout := components.Layout("List Not Found", components.NotFound(&profile))
 			return components.Render(c, http.StatusNotFound, layout)
 		}
 
@@ -115,6 +115,6 @@ func (h itemsHandler) Handler(c echo.Context) error {
 		return components.Render(c, http.StatusOK, components.Boost(listRecord.Title, components.Items(profile, list, items)))
 	}
 
-	layout := components.Layout(listRecord.Title, c.Get("csrf").(string), components.Items(profile, list, items))
+	layout := components.Layout(listRecord.Title, components.Items(profile, list, items))
 	return components.Render(c, http.StatusOK, layout)
 }
