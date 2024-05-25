@@ -59,6 +59,7 @@ func (h callbackHandler) Handler(c echo.Context) error {
 	sess.Options = &sessions.Options{
 		Path:     "/",
 		HttpOnly: true,
+		MaxAge:   86400 * 7,
 		SameSite: http.SameSiteLaxMode,
 		Secure:   strings.HasPrefix(os.Getenv("APP_URL"), "https://"),
 	}
