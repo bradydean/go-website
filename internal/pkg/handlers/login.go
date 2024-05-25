@@ -39,7 +39,6 @@ func (h loginHandler) Handler(c echo.Context) error {
 
 	sess.Options = &sessions.Options{
 		Path:     "/",
-		MaxAge:   86400 * 7,
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
 		Secure:   strings.HasPrefix(os.Getenv("APP_URL"), "https://"),
