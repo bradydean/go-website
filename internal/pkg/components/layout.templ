@@ -9,7 +9,8 @@ templ header(title string) {
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>{ title }</title>
-		<script src="/static/htmx.min.js"></script>
+		<script src="/static/htmx.min.js" integrity="sha256-RJMXreeIHpSVENthSZHhlcOgmcTHkcJNrOxV+fSipFI="></script>
+		<meta name="htmx-config" content='{ "includeIndicatorStyles": false }' />
 		<link href="/static/tailwind.css" rel="stylesheet"/>
 	</head>
 }
@@ -29,12 +30,7 @@ templ Navbar(profile *profile.Profile) {
 						if profile != nil {
 							<img alt={ profile.Name + " profile picture" } src={ profile.Picture }/>
 						} else {
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-							</svg>
+							<img src="/static/default-profile.svg" alt="default profile picture"/>
 						}
 					</div>
 				</div>

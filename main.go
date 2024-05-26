@@ -91,11 +91,11 @@ func main() {
 	}))
 
 	e.Use(middleware.SecureWithConfig(middleware.SecureConfig{
-		XSSProtection:         "",	
+		XSSProtection:         "",
 		XFrameOptions:         "",
 		HSTSMaxAge:            63072000,
 		ContentTypeNosniff:    "nosniff",
-		ContentSecurityPolicy: "default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self'; img-src https: data:; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; form-action 'self';",
+		ContentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src data: https:; style-src 'self' 'unsafe-inline'; frame-ancestors 'none';",
 	}))
 
 	session, err := session.New()
